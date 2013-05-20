@@ -3,12 +3,16 @@ package com.lebooo.admin.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.*;
 import javax.persistence.Entity;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.*;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -23,8 +27,11 @@ public class User extends IdEntity {
 	private String plainPassword;
 	private String password;
 	private String salt;
-	private String roles;
+    private String email;
+    private String status;
 	private Date registerDate;
+
+    private List<Role> roleList = Lists.newArrayList(); // 有序的关联对象集合
 
 	public User() {
 	}
@@ -78,21 +85,6 @@ public class User extends IdEntity {
 		this.salt = salt;
 	}
 
-	public String getRoles() {
-		return roles;
-	}
-
-	public void setRoles(String roles) {
-		this.roles = roles;
-	}
-
-	@Transient
-	@JsonIgnore
-	public List<String> getRoleList() {
-		// 角色列表在数据库中实际以逗号分隔字符串存储，因此返回不能修改的List.
-		return ImmutableList.copyOf(StringUtils.split(roles, ","));
-	}
-
 	// 设定JSON序列化时的日期格式
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
 	public Date getRegisterDate() {
@@ -102,6 +94,40 @@ public class User extends IdEntity {
 	public void setRegisterDate(Date registerDate) {
 		this.registerDate = registerDate;
 	}
+
+    @Email
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    // 多对多定义
+    @ManyToMany
+    @JoinTable(name = "admin_user_role", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "role_id") })
+    // Fecth策略定义
+    @Fetch(FetchMode.SUBSELECT)
+    // 集合按id排序
+    @OrderBy("id ASC")
+    // 缓存策略
+    //@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
+    }
 
 	@Override
 	public String toString() {

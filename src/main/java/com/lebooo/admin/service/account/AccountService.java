@@ -53,7 +53,7 @@ public class AccountService {
 	@Transactional(readOnly = false)
 	public void registerUser(User user) {
 		entryptPassword(user);
-		user.setRoles("user");
+		//user.getRoleList().add("user");
 		user.setRegisterDate(dateProvider.getDate());
 
 		userDao.save(user);

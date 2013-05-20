@@ -18,15 +18,10 @@
  */
 package com.lebooo.admin.service.account;
 
-import java.io.Serializable;
-
-import javax.annotation.PostConstruct;
-
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import com.google.common.base.Objects;
+import com.lebooo.admin.entity.Role;
+import com.lebooo.admin.entity.User;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -34,10 +29,10 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.lebooo.admin.entity.User;
 import org.springside.modules.utils.Encodes;
 
-import com.google.common.base.Objects;
+import javax.annotation.PostConstruct;
+import java.io.Serializable;
 
 public class ShiroDbRealm extends AuthorizingRealm {
 
@@ -51,9 +46,13 @@ public class ShiroDbRealm extends AuthorizingRealm {
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
 		User user = accountService.findUserByLoginName(token.getUsername());
 		if (user != null) {
+			if (user.getStatus().equals("disabled")) {
+				throw new DisabledAccountException();
+			}
+
 			byte[] salt = Encodes.decodeHex(user.getSalt());
-			return new SimpleAuthenticationInfo(new ShiroUser(user.getId(), user.getLoginName(), user.getName()),
-					user.getPassword(), ByteSource.Util.bytes(salt), getName());
+			return new SimpleAuthenticationInfo(new ShiroUser(user.getId(), user.getLoginName(), user.getName()), user.getPassword(),
+					ByteSource.Util.bytes(salt), getName());
 		} else {
 			return null;
 		}
@@ -66,8 +65,14 @@ public class ShiroDbRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		ShiroUser shiroUser = (ShiroUser) principals.getPrimaryPrincipal();
 		User user = accountService.findUserByLoginName(shiroUser.loginName);
+
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-		info.addRoles(user.getRoleList());
+		for (Role role : user.getRoleList()) {
+			//基于Role的权限信息
+			info.addRole(role.getName());
+			//基于Permission的权限信息
+			info.addStringPermissions(role.getPermissionList());
+		}
 		return info;
 	}
 
@@ -92,12 +97,12 @@ public class ShiroDbRealm extends AuthorizingRealm {
 	 */
 	public static class ShiroUser implements Serializable {
 		private static final long serialVersionUID = -1373760761780840081L;
-		public Long id;
 		public String loginName;
 		public String name;
+        public Long id;
 
 		public ShiroUser(Long id, String loginName, String name) {
-			this.id = id;
+            this.id = id;
 			this.loginName = loginName;
 			this.name = name;
 		}
