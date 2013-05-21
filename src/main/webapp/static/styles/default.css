@@ -3,6 +3,10 @@
     margin-bottom: 15px;
 }
 
+#header h1 {
+    font-size: 2em;
+}
+
 #header h1 .pull-right {
     font-size: 12px;
 }
@@ -28,6 +32,16 @@
     color: #999;
 }
 
+* {
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+
+a {
+    color: #31A9FD;
+}
+
 #loginForm {
     text-align: center;
     margin-top: 10%;
@@ -46,3 +60,64 @@
     background-color: #76D6FF;
     width: 21.6em;
 }
+
+#header .menubar {
+    border-width: 1px 1px 1px 0;
+    border-color: #797979;
+    border-style: solid;
+    line-height: 2.75em;
+    background-color: #EBEBEB;
+    margin: 1.5em 0;
+}
+
+#header .menubar a {
+    height: 100%;
+    padding: 0.8em;
+    border-width: 0 1px;
+    border-color: #797979;
+    border-style: solid;
+}
+
+#header .menubar a + a {
+    border-left-width: 0;
+}
+
+#header .menubar a.active {
+    background-color: #D6D6D6;
+}
+
+.left-nav {
+    background-color: #EBEBEB;
+    border: 1px solid #797979;
+}
+
+.right-main {
+    border: 1px solid #797979;
+}
+
+.row-fluid .right-main {
+    margin-left: 0;
+}
+
+.right-main .menubar {
+    background-color: #EBEBEB;
+    border-bottom: 1px solid #797979;
+    padding: 0.3em 0.6em 0.3em 2.4em;
+    line-height: 2.3em;
+    height: 2.3em;
+}
+
+.right-main .menubar button {
+    -webkit-border-radius: 5px !important;
+    -moz-border-radius: 5px !important;
+    border-radius: 5px !important;
+}
+
+.right-main .menubar button + button {
+    margin-left: 0.6em;
+}
+
+.no-space [class*="span"] {
+    margin-left: 0;
+}
+
