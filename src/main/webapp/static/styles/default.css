@@ -1,3 +1,7 @@
+.container {
+    padding-bottom: 2em;
+}
+
 /* header */
 #header {
     margin-bottom: 15px;
@@ -32,14 +36,10 @@
     color: #999;
 }
 
-* {
+input {
     -webkit-border-radius: 0 !important;
     -moz-border-radius: 0 !important;
     border-radius: 0 !important;
-}
-
-a {
-    color: #31A9FD;
 }
 
 #loginForm {
@@ -86,17 +86,22 @@ a {
     background-color: #D6D6D6;
 }
 
-.left-nav {
-    background-color: #EBEBEB;
-    border: 1px solid #797979;
+.row-fluid {
+    width: 938px;
 }
 
-.right-main {
-    border: 1px solid #797979;
+.row-fluid .left-nav {
+    background-color: #EBEBEB;
+    border-right: 1px solid #797979;
+    width: 260px;
+    height: 400px;
 }
 
 .row-fluid .right-main {
     margin-left: 0;
+    width: 678px;
+    position: relative;
+    height: 400px;
 }
 
 .right-main .menubar {
@@ -107,17 +112,64 @@ a {
     height: 2.3em;
 }
 
-.right-main .menubar button {
-    -webkit-border-radius: 5px !important;
-    -moz-border-radius: 5px !important;
-    border-radius: 5px !important;
-}
-
 .right-main .menubar button + button {
     margin-left: 0.6em;
 }
 
-.no-space [class*="span"] {
-    margin-left: 0;
+.main {
+    border: 1px solid #797979;
 }
+
+.left-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.left-nav ul li {
+    line-height: 1.8em;
+    padding: 0.6em 0.8em;
+    border-bottom: 1px solid #797979;
+    cursor: pointer;
+}
+
+.left-nav [class*=icon-] {
+    margin-top: 0.2em;
+}
+
+.left-nav .active {
+   background-color: #76D6FF;
+}
+
+.right-main table tr td{
+    vertical-align: middle;
+    line-height: 3em;
+    padding: 0 0.6em;
+}
+
+.right-main table tr td input {
+    margin-top: 0;
+}
+
+.right-main .pagination {
+    right: 1em;
+    bottom: 0.6em;
+    position: absolute;
+    margin: 0;
+}
+
+.pagination .active, .pagination .disabled {
+    cursor: default;
+    text-decoration: none;
+    color: #333;
+}
+
+.pagination .pageup {
+    margin-right: 1em;
+}
+
+.pagination .pagedown {
+    margin-left: 1em;
+}
+
 

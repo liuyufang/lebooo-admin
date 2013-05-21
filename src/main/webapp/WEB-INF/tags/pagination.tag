@@ -15,34 +15,26 @@ request.setAttribute("end", end);
 %>
 
 <div class="pagination">
-	<ul>
 		 <% if (page.hasPreviousPage()){%>
-               	<li><a href="?page=1&sortType=${sortType}&${searchParams}">&lt;&lt;</a></li>
-                <li><a href="?page=${current-1}&sortType=${sortType}&${searchParams}">&lt;</a></li>
+                <a class="pageup" href="?page=${current-1}&sortType=${sortType}&${searchParams}">上一页</a>
          <%}else{%>
-                <li class="disabled"><a href="#">&lt;&lt;</a></li>
-                <li class="disabled"><a href="#">&lt;</a></li>
+                <a class="pageup disabled" href="#">上一页</a>
          <%} %>
  
-		<c:forEach var="i" begin="${begin}" end="${end}">
-            <c:choose>
-                <c:when test="${i == current}">
-                    <li class="active"><a href="?page=${i}&sortType=${sortType}&${searchParams}">${i}</a></li>
-                </c:when>
-                <c:otherwise>
-                    <li><a href="?page=${i}&sortType=${sortType}&${searchParams}">${i}</a></li>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-	  
+        <a class="active" href="?page=${current}&sortType=${sortType}&${searchParams}">${current}</a>
+        /
+        <% if (current == end) { %>
+            <a class="active" href="?page=${end}&sortType=${sortType}&${searchParams}">${end}</a>
+        <% } else { %>
+            <a href="?page=${end}&sortType=${sortType}&${searchParams}">${end}</a>
+        <% } %>
+
+
 	  	 <% if (page.hasNextPage()){%>
-               	<li><a href="?page=${current+1}&sortType=${sortType}&${searchParams}">&gt;</a></li>
-                <li><a href="?page=${page.totalPages}&sortType=${sortType}&${searchParams}">&gt;&gt;</a></li>
+               	<a class="pagedown" href="?page=${current+1}&sortType=${sortType}&${searchParams}">下一页</a>
          <%}else{%>
-                <li class="disabled"><a href="#">&gt;</a></li>
-                <li class="disabled"><a href="#">&gt;&gt;</a></li>
+                <a class="pagedown disabled" href="#">下一页</a>
          <%} %>
 
-	</ul>
 </div>
 

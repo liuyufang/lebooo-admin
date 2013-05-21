@@ -1,10 +1,14 @@
 package com.lebooo.admin.web.account;
 
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.ServletRequest;
 import javax.validation.Valid;
 
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.lebooo.admin.entity.User;
 import com.lebooo.admin.service.account.AccountService;
+import org.springside.modules.web.Servlets;
 
 /**
  * 管理员管理用户的Controller.
@@ -25,13 +30,38 @@ import com.lebooo.admin.service.account.AccountService;
 @RequestMapping(value = "/admin/user")
 public class UserAdminController {
 
+    private static final int PAGE_SIZE = 3;
+
 	@Autowired
 	private AccountService accountService;
 
-	@RequestMapping(method = RequestMethod.GET)
+    private static Map<String, String> sortTypes = Maps.newLinkedHashMap();
+    static {
+        sortTypes.put("auto", "自动");
+        sortTypes.put("name", "名字");
+    }
+
+	//@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
 		List<User> users = accountService.getAllUser();
 		model.addAttribute("users", users);
+
+		return "account/adminUserList";
+	}
+
+    @RequestMapping(method = RequestMethod.GET)
+    public String listPage(@RequestParam(value = "sortType", defaultValue = "auto") String sortType,
+                           @RequestParam(value = "page", defaultValue = "1") int pageNumber, Model model, ServletRequest request) {
+        Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "search_");
+
+		Page<User> users = accountService.getPagingUser(searchParams, pageNumber, PAGE_SIZE, sortType);
+		model.addAttribute("users", users);
+
+        model.addAttribute("users", users);
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("sortTypes", sortTypes);
+        // 将搜索条件编码成字符串，用于排序，分页的URL
+        model.addAttribute("searchParams", Servlets.encodeParameterStringWithPrefix(searchParams, "search_"));
 
 		return "account/adminUserList";
 	}

@@ -1,12 +1,18 @@
 package com.lebooo.admin.service.account;
 
 import java.util.List;
+import java.util.Map;
 
+import com.lebooo.admin.entity.Task;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import com.lebooo.admin.entity.User;
@@ -14,6 +20,8 @@ import com.lebooo.admin.repository.TaskDao;
 import com.lebooo.admin.repository.UserDao;
 import com.lebooo.admin.service.ServiceException;
 import com.lebooo.admin.service.account.ShiroDbRealm.ShiroUser;
+import org.springside.modules.persistence.DynamicSpecifications;
+import org.springside.modules.persistence.SearchFilter;
 import org.springside.modules.security.utils.Digests;
 import org.springside.modules.utils.DateProvider;
 import org.springside.modules.utils.Encodes;
@@ -37,6 +45,14 @@ public class AccountService {
 	private UserDao userDao;
 	private TaskDao taskDao;
 	private DateProvider dateProvider = DateProvider.DEFAULT;
+
+    public Page<User> getPagingUser( Map<String, Object> searchParams, int pageNumber, int pageSize,
+                                  String sortType) {
+        PageRequest pageRequest = buildPageRequest(pageNumber, pageSize, sortType);
+        Specification<User> spec = buildSpecification(searchParams);
+
+        return userDao.findAll(spec, pageRequest);
+    }
 
 	public List<User> getAllUser() {
 		return (List<User>) userDao.findAll();
@@ -117,4 +133,27 @@ public class AccountService {
 	public void setDateProvider(DateProvider dateProvider) {
 		this.dateProvider = dateProvider;
 	}
+
+    /**
+     * 创建分页请求.
+     */
+    private PageRequest buildPageRequest(int pageNumber, int pagzSize, String sortType) {
+        Sort sort = null;
+        if ("auto".equals(sortType)) {
+            sort = new Sort(Sort.Direction.DESC, "id");
+        } else if ("name".equals(sortType)) {
+            sort = new Sort(Sort.Direction.ASC, "name");
+        }
+
+        return new PageRequest(pageNumber - 1, pagzSize, sort);
+    }
+
+    /**
+     * 创建动态查询条件组合.
+     */
+    private Specification<User> buildSpecification(Map<String, Object> searchParams) {
+        Map<String, SearchFilter> filters = SearchFilter.parse(searchParams);
+        Specification<User> spec = DynamicSpecifications.bySearchFilter(filters.values(), User.class);
+        return spec;
+    }
 }
