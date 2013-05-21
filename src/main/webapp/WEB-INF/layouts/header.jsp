@@ -4,24 +4,23 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <div id="header">
 	<div id="title">
-	    <h1>QuickStart示例<small>--TodoList应用演示</small>
 	    <shiro:user>
-			<div class="btn-group pull-right">
-				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-					<i class="icon-user"></i> <shiro:principal property="name"/>
-					<span class="caret"></span>
-				</a>
-			
-				<ul class="dropdown-menu">
-					<shiro:hasRole name="admin">
-						<li><a href="${ctx}/admin/user">Admin Users</a></li>
-						<li class="divider"></li>
-					</shiro:hasRole>
-					<li><a href="${ctx}/profile">Edit Profile</a></li>
-					<li><a href="${ctx}/logout">Logout</a></li>
-				</ul>
-			</div>
-		</shiro:user>
-		</h1>
+            <h1>后台管理
+                <div class="pull-right">
+                    <span class="name"><shiro:principal property="name"/></span>
+                    <a href="${ctx}/profile" class="menu">发布视频</a>
+                    <a href="${ctx}/logout" class="menu">退出登录</a>
+
+                    <!--<ul class="dropdown-menu">
+                        <shiro:hasRole name="admin">
+                            <li><a href="${ctx}/admin/user">Admin Users</a></li>
+                            <li class="divider"></li>
+                        </shiro:hasRole>
+                        <li><a href="${ctx}/profile">发布视频</a></li>
+                        <li><a href="${ctx}/logout">退出登录</a></li>
+                    </ul>  -->
+                </div>
+            </h1>
+        </shiro:user>
 	</div>
 </div>
