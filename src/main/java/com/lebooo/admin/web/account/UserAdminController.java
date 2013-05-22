@@ -9,6 +9,9 @@ import javax.validation.Valid;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -73,10 +76,13 @@ public class UserAdminController {
 	}
 
 	@RequestMapping(value = "update", method = RequestMethod.POST)
-	public String update(@Valid @ModelAttribute("preloadUser") User user, RedirectAttributes redirectAttributes) {
-		accountService.updateUser(user);
-		redirectAttributes.addFlashAttribute("message", "更新用户" + user.getLoginName() + "成功");
-		return "redirect:/admin/user";
+	public ResponseEntity<?> update(@Valid @ModelAttribute("preloadUser") User user) {
+		try{
+            accountService.updateUser(user);
+            return new ResponseEntity(HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 	}
 
 	@RequestMapping(value = "delete/{id}")
@@ -86,6 +92,16 @@ public class UserAdminController {
 		redirectAttributes.addFlashAttribute("message", "删除用户" + user.getLoginName() + "成功");
 		return "redirect:/admin/user";
 	}
+
+    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getUserJson(@PathVariable("id") Long id) {
+        User user = accountService.getUser(id);
+        if (user == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(user, HttpStatus.OK);
+    }
+
 
 	/**
 	 * 使用@ModelAttribute, 实现Struts2 Preparable二次部分绑定的效果,先根据form的id从数据库查出User对象,再把Form提交的内容绑定到该对象上。

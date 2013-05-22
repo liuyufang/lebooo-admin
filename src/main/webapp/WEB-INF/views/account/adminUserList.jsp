@@ -39,16 +39,28 @@
                             <fmt:formatDate value="${user.registerDate}" pattern="yyyy-MM-dd  HH:mm" />
                         </td>
                         <td>(上次登录ip)</td>
-                        <td style="width:4em;"><button class="btn">编辑</button></td>
+                        <td style="width:4em;"> <a href="#editUserModal" role="button" class="btn pull-right" data-toggle="modal" onclick="editUser(${user.id});">编辑</a></td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
-            <tags:pagination page="${users}" paginationSize="3"/>
+            <tags:pagination page="${users}" paginationSize="5"/>
+            <script>
+                $(function(){
+                    $('#contentTable input[type=checkbox]').click(function(){
+                        if($('#contentTable input:checked').length == 0){
+                            $('.right-main .menubar button').attr('disabled', true);
+                        }else{
+                            $('.right-main .menubar button').removeAttr('disabled');
+                        }
+                    });
+                });
+            </script>
         </div>
     </div>
 
-    <!-- Modal -->
+
+    <!-- dialog:添加新管理员 -->
     <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <form id="inputForm" action="${ctx}/register/ajax" method="post" class="form-horizontal">
             <div class="modal-header">
@@ -134,6 +146,101 @@
             </div>
         </form>
     </div>
+
+
+
+    <!-- dialog:编辑新管理员 -->
+    <div id="editUserModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
+        <form id="editUserForm" action="${ctx}/admin/user/update" method="post" class="form-horizontal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="editUserModalLabel">编辑管理员</h3>
+            </div>
+            <div class="modal-body">
+                <fieldset>
+                    <div id="update_error"></div>
+                    <div class="control-group">
+                        <input type="hidden" name="id" />
+                        <label for="name" class="control-label">用户名:</label>
+                        <div class="controls">
+                            <input type="text" name="name" class="input-large required"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="loginName" class="control-label">登录名:</label>
+                        <div class="controls">
+                            <input type="text" name="loginName" class="input-large required" minlength="3"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="plainPassword" class="control-label">密码:</label>
+                        <div class="controls">
+                            <input type="password" name="plainPassword" class="input-large" placeholder="如果不修改则留空"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="confirmPassword" class="control-label">确认密码:</label>
+                        <div class="controls">
+                            <input type="password" name="confirmPassword" class="input-large" equalTo="#plainPassword" placeholder="如果不修改则留空"/>
+                        </div>
+                    </div>
+                </fieldset>
+                <script>
+                    $(document).ready(function() {
+                        var form = $('#editUserForm')[0];
+                        //聚焦第一个输入框
+                        $('#editUserModal').on('shown', function () {
+                            form.name.focus();
+                        });
+                        //为inputForm注册validate函数
+                        $(form).validate({
+                            // ajax 提交表单
+                            submitHandler: function(){
+                                $.ajax({
+                                    type: 'post',
+                                    url: form.action,
+                                    data: $(form).serialize(),
+                                    success: function(){
+                                        $('#editUserModal').modal('hide');
+                                        form.reset();
+                                        $('#editUserModal .alert-error').remove();
+                                    },
+                                    error: function(){
+                                        $('#update_error').append('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>错误!</strong> 保存失败。</div>');
+                                    }
+                                });
+                            }
+                        }); // validate
+                        // 按回车提交
+                        $("input", form).keydown(function(event){
+                            if(event.keyCode == 13){
+                                $(form).submit();
+                                event.preventDefault();  // 阻止Modal隐藏
+                            }
+                        });
+                    });
+                    function editUser(id){
+                        $.ajax({
+                            type: 'GET',
+                            url: '${ctx}/admin/user/' + id,
+                            dataType: 'json',
+                            success: function(user){
+                                var form = $('#editUserForm')[0];
+                                form.id.value = id;
+                                form.name.value = user.name;
+                                form.loginName.value = user.loginName;
+                            }
+                        });
+                    }
+                </script>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                <button id="update_submit_btn" type="submit" class="btn btn-primary">保存</button>
+            </div>
+        </form>
+    </div>
+
 
 </body>
 </html>
