@@ -8,6 +8,9 @@
 <html>
 <head>
 	<title>登录页</title>
+    <style type="text/css">
+        #header {display: none;}
+    </style>
 </head>
 
 <body>

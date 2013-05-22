@@ -30,7 +30,7 @@ import org.springside.modules.web.Servlets;
 @RequestMapping(value = "/admin/user")
 public class UserAdminController {
 
-    private static final int PAGE_SIZE = 3;
+    private static final int PAGE_SIZE = 5;
 
 	@Autowired
 	private AccountService accountService;

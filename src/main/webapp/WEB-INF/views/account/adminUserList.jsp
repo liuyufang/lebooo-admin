@@ -50,7 +50,7 @@
 
     <!-- Modal -->
     <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <form id="inputForm" action="${ctx}/register" method="post" class="form-horizontal">
+        <form id="inputForm" action="${ctx}/register/ajax" method="post" class="form-horizontal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h3 id="myModalLabel">添加管理员</h3>
@@ -116,6 +116,13 @@
                                         $('#register_error').append('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>错误!</strong> 创建失败。</div>');
                                     }
                                 });
+                            }
+                        }); // validate
+                        // 按回车提交
+                        $("#inputForm input").keydown(function(event){
+                            if(event.keyCode == 13){
+                                $('#inputForm').submit();
+                                event.preventDefault();  // 阻止Modal隐藏
                             }
                         });
                     });
