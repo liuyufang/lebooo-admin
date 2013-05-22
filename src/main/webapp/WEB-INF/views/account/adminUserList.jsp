@@ -26,7 +26,7 @@
                 <button class="btn" disabled>启用</button>
                 <button class="btn" disabled>禁用</button>
                 <button class="btn" disabled>删除</button>
-                <button class="btn pull-right">+ 添加管理员</button>
+                <a href="#myModal" role="button" class="btn pull-right" data-toggle="modal">+ 添加管理员</a>
             </div>
             <table id="contentTable" class="table table-striped table-condensed">
                 <tbody>
@@ -48,8 +48,85 @@
         </div>
     </div>
 
-
-	
+    <!-- Modal -->
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <form id="inputForm" action="${ctx}/register" method="post" class="form-horizontal">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">添加管理员</h3>
+            </div>
+            <div class="modal-body">
+                <fieldset>
+                    <div id="register_error"></div>
+                    <div class="control-group">
+                        <label for="name" class="control-label">用户名:</label>
+                        <div class="controls">
+                            <input type="text" id="name" name="name" class="input-large required"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="loginName" class="control-label">登录名:</label>
+                        <div class="controls">
+                            <input type="text" id="loginName" name="loginName" class="input-large required" minlength="3"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="plainPassword" class="control-label">密码:</label>
+                        <div class="controls">
+                            <input type="password" id="plainPassword" name="plainPassword" class="input-large required"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="confirmPassword" class="control-label">确认密码:</label>
+                        <div class="controls">
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="input-large required" equalTo="#plainPassword"/>
+                        </div>
+                    </div>
+                </fieldset>
+                <script>
+                    $(document).ready(function() {
+                        //聚焦第一个输入框
+                        $('#myModal').on('shown', function () {
+                            $("#name").focus();
+                        });
+                        //为inputForm注册validate函数
+                        $("#inputForm").validate({
+                            rules: {
+                                loginName: {
+                                    remote: "${ctx}/register/checkLoginName"
+                                }
+                            },
+                            messages: {
+                                loginName: {
+                                    remote: "用户登录名已存在"
+                                }
+                            },
+                            // ajax 提交表单
+                            submitHandler: function(){
+                                $.ajax({
+                                    type: 'post',
+                                    url: $('#inputForm')[0].action,
+                                    data: $('#inputForm').serialize(),
+                                    success: function(){
+                                        $('#myModal').modal('hide');
+                                        $('#inputForm')[0].reset();
+                                        $('#myModal .alert-error').remove();
+                                    },
+                                    error: function(){
+                                        $('#register_error').append('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>错误!</strong> 创建失败。</div>');
+                                    }
+                                });
+                            }
+                        });
+                    });
+                </script>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                <button id="register_submit_btn" type="submit" class="btn btn-primary">确认添加</button>
+            </div>
+        </form>
+    </div>
 
 </body>
 </html>
