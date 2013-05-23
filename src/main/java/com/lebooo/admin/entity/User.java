@@ -28,7 +28,7 @@ public class User extends IdEntity {
 	private String password;
 	private String salt;
     private String email;
-    private String status;
+    private String status = "enabled";
 	private Date registerDate;
 
     private List<Role> roleList = Lists.newArrayList(); // 有序的关联对象集合

@@ -61,7 +61,13 @@ public class RegisterController {
 
         accountService.registerUser(user);
 
-        return new ResponseEntity(HttpStatus.CREATED);
+        //按照Restful风格约定，创建指向新任务的url, 也可以直接返回id或对象.
+        Long id = user.getId();
+        URI uri = uriBuilder.path("/admin/user/" + id).build().toUri();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(uri);
+
+        return new ResponseEntity(headers, HttpStatus.CREATED);
     }
 
 	/**

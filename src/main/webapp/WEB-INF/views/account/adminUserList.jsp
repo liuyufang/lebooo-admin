@@ -181,6 +181,7 @@
                                     url: $('#inputForm')[0].action,
                                     data: $('#inputForm').serialize(),
                                     success: function(){
+                                        showMessage("success", '已创建');
                                         $('#myModal').modal('hide');
                                         $('#inputForm')[0].reset();
                                         $('#myModal .alert-error').remove();
