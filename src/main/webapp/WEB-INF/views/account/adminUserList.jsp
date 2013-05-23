@@ -13,8 +13,10 @@
 	<c:if test="${not empty message}">
 		<div id="message" class="alert alert-success"><button data-dismiss="alert" class="close">×</button>${message}</div>
 	</c:if>
+    <div id="delete_error"></div>
 
     <div class="row-fluid main">
+        <%--<div id="delete_error"></div>--%>
         <div class="span3 left-nav">
             <ul>
                 <li class="active">管理员账号<span class="icon-chevron-right pull-right"></span></li>
@@ -23,29 +25,49 @@
         </div>
         <div class="span9 right-main">
             <div class="menubar">
-                <button class="btn" disabled>启用</button>
-                <button class="btn" disabled>禁用</button>
-                <button class="btn" disabled>删除</button>
+                <button id="btn_enable" class="btn" disabled>启用</button>
+                <button id="btn_disable" class="btn" disabled>禁用</button>
+                <button id="btn_delete" class="btn" disabled>删除</button>
                 <a href="#myModal" role="button" class="btn pull-right" data-toggle="modal">+ 添加管理员</a>
             </div>
-            <table id="contentTable" class="table table-striped table-condensed">
-                <tbody>
-                <c:forEach items="${users.content}" var="user">
-                    <tr>
-                        <td><input type="checkbox" /></td>
-                        <td>${user.name}</td>
-                        <td>${user.email}</td>
-                        <td>
-                            <fmt:formatDate value="${user.registerDate}" pattern="yyyy-MM-dd  HH:mm" />
-                        </td>
-                        <td>(上次登录ip)</td>
-                        <td style="width:4em;"> <a href="#editUserModal" role="button" class="btn pull-right" data-toggle="modal" onclick="editUser(${user.id});">编辑</a></td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+            <form id="contentForm">
+                <table id="contentTable" class="table table-striped table-condensed">
+                    <tbody>
+                    <c:forEach items="${users.content}" var="user">
+                        <tr>
+                            <td><input type="checkbox" name="id" value="${user.id}"/></td>
+                            <td>${user.name}<c:if test="${user.status == 'disabled'}"><span class="status_disabled">(已禁用)</span></c:if></td>
+                            <td>${user.email}</td>
+                            <td>
+                                <fmt:formatDate value="${user.registerDate}" pattern="yyyy-MM-dd  HH:mm" />
+                            </td>
+                            <td>(上次登录ip)</td>
+                            <td style="width:4em;"> <a href="#editUserModal" role="button" class="btn pull-right" data-toggle="modal" onclick="editUser(${user.id});">编辑</a></td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </form>
             <tags:pagination page="${users}" paginationSize="5"/>
             <script>
+                function showMessage(type, msg){
+                    var m = $('<div class="alert alert-'+ type +'"><button type="button" class="close" data-dismiss="alert">&times;</button>'+ msg +'</div>').appendTo('#delete_error');
+                    setTimeout(function(){
+                        m.remove();
+                    }, 1600);
+                }
+                function addStatusDisabled(checkebox){
+                    var tdUserName = $(checkebox).parent().next();
+                    $(tdUserName).each(function(){
+                        if($('.status_disabled', this).length == 0){
+                            $(this).append('<span class="status_disabled">(已禁用)</span>');
+                        }
+                    });
+                }
+                function removeStatusDisabled(checkebox){
+                    var tdUserName = $(checkebox).parent().next();
+                    $('.status_disabled', tdUserName).remove();
+                }
                 $(function(){
                     $('#contentTable input[type=checkbox]').click(function(){
                         if($('#contentTable input:checked').length == 0){
@@ -53,6 +75,45 @@
                         }else{
                             $('.right-main .menubar button').removeAttr('disabled');
                         }
+                    });
+                    $('#btn_delete').click(function(){
+                        var checked = $('#contentTable input:checked');
+                        $.ajax({
+                            url: '${ctx}/admin/user/deleteMulti',
+                            data: $('#contentForm').serialize(),
+                            success: function(){
+                                $(checked).parent().parent().remove();
+                            },
+                            error: function(){
+                                showMessage('error', '<strong>错误!</strong> 删除用户失败。');
+                            }
+                        });
+                    });
+                    $('#btn_enable').click(function(){
+                        var checked = $('#contentTable input:checked');
+                        $.ajax({
+                            url: '${ctx}/admin/user/enableMulti',
+                            data: $('#contentForm').serialize(),
+                            success: function(){
+                                removeStatusDisabled(checked);
+                            },
+                            error: function(){
+                                showMessage('error', '<strong>错误!</strong> 启用用户失败。');
+                            }
+                        });
+                    });
+                    $('#btn_disable').click(function(){
+                        var checked = $('#contentTable input:checked');
+                        $.ajax({
+                            url: '${ctx}/admin/user/disableMulti',
+                            data: $('#contentForm').serialize(),
+                            success: function(){
+                                addStatusDisabled(checked);
+                            },
+                            error: function(){
+                                showMessage('error', '<strong>错误!</strong> 禁用用户失败。</div>');
+                            }
+                        });
                     });
                 });
             </script>

@@ -93,6 +93,34 @@ public class UserAdminController {
 		return "redirect:/admin/user";
 	}
 
+    @RequestMapping(value = "deleteMulti")
+    public ResponseEntity<?> deleteMulti(@RequestParam(value = "id") Long[] id){
+         for(Long i : id){
+             accountService.deleteUser(i);
+         }
+         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "enableMulti")
+    public ResponseEntity<?> enableMulti(@RequestParam(value = "id") Long[] id){
+        for(Long i : id){
+            User user = accountService.getUser(i);
+            user.setStatus("enabled");
+            accountService.updateUser(user);
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "disableMulti")
+    public ResponseEntity<?> disableMulti(@RequestParam(value = "id") Long[] id){
+        for(Long i : id){
+            User user = accountService.getUser(i);
+            user.setStatus("disabled");
+            accountService.updateUser(user);
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUserJson(@PathVariable("id") Long id) {
         User user = accountService.getUser(id);
