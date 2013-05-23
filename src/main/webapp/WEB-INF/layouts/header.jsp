@@ -13,7 +13,7 @@
                 </div>
             </h1>
             <div class="menubar">
-                <a href="${ctx}/lebooo/user">乐播用户</a><a href="${ctx}/lebooo/discover">管理发现</a><a href="${ctx}/lebooo/reportspam">处理举报</a><shiro:hasRole name="admin"><a href="${ctx}/admin/user" >后台账号</a></shiro:hasRole>
+                <a href="${ctx}/lebooo/user">乐播用户</a><a href="${ctx}/lebooo/discover">管理发现</a><a href="${ctx}/lebooo/reportspam">处理举报</a><a href="javascript:onClickBackgroundAccount();void(0)" >后台账号</a>
             </div>
             <script>
                 $(function(){
@@ -23,6 +23,13 @@
                         }
                     });
                 });
+                function onClickBackgroundAccount(){
+                    var targetUrl = '${ctx}/lebooo/robot';
+                    <shiro:hasRole name="admin">
+                    targetUrl = '${ctx}/admin/user';
+                    </shiro:hasRole>
+                    window.location.href = targetUrl;
+                }
             </script>
         </shiro:user>
 	</div>

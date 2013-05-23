@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
@@ -19,8 +20,8 @@
         <%--<div id="delete_error"></div>--%>
         <div class="span3 left-nav">
             <ul>
-                <li class="active">管理员账号<span class="icon-chevron-right pull-right"></span></li>
-                <li onclick="window.location.href='${ctx}/lebooo/robot'">机器人<span class="icon-chevron-right pull-right"></span></li>
+                <shiro:hasRole name="admin"><li onclick="window.location.href='${ctx}/admin/user'">管理员账号<span class="icon-chevron-right pull-right"></span></li></shiro:hasRole>
+                <li class="active">机器人<span class="icon-chevron-right pull-right"></span></li>
             </ul>
         </div>
         <div class="span9 right-main">
@@ -28,32 +29,32 @@
                 <button id="btn_enable" class="btn" disabled>启用</button>
                 <button id="btn_disable" class="btn" disabled>禁用</button>
                 <button id="btn_delete" class="btn" disabled>删除</button>
-                <a href="#myModal" role="button" class="btn pull-right" data-toggle="modal">+ 添加管理员</a>
+                <a href="#myModal" role="button" class="btn pull-right" data-toggle="modal">+ 添加机器人</a>
             </div>
             <form id="contentForm">
                 <table id="contentTable" class="table table-striped table-condensed">
                     <tbody>
-                    <c:forEach items="${users.content}" var="user">
+                    <c:forEach items="${robots.content}" var="robot">
                         <tr>
-                            <td><input type="checkbox" name="id" value="${user.id}"/></td>
-                            <td>${user.name}<c:if test="${user.status == 'disabled'}"><span class="status_disabled">(已禁用)</span></c:if></td>
-                            <td>${user.email}</td>
+                            <td><input type="checkbox" name="id" value="${robot.id}"/></td>
+                            <td>${robot.name}<c:if test="${robot.status == 'disabled'}"><span class="status_disabled">(已禁用)</span></c:if></td>
+                            <td>${robot.email}</td>
                             <td>
-                                <c:if test="${user.lastLoginDate == null}">
+                                <c:if test="${robot.lastLoginDate == null}">
                                     (上次登录时间)
                                 </c:if>
-                                <c:if test="${user.lastLoginDate != null}">
-                                    <fmt:formatDate value="${user.lastLoginDate}" pattern="yyyy-MM-dd  HH:mm" />
+                                <c:if test="${robot.lastLoginDate != null}">
+                                    <fmt:formatDate value="${robot.lastLoginDate}" pattern="yyyy-MM-dd  HH:mm" />
                                 </c:if>
                             </td>
-                            <td>${user.lastLoginIp == null ? "(上次登录ip)" : user.lastLoginIp}</td>
-                            <td style="width:4em;"> <a href="#editUserModal" role="button" class="btn pull-right" data-toggle="modal" onclick="editUser(${user.id});">编辑</a></td>
+                            <td>${robot.lastLoginIp == null ? "(上次登录ip)" : robot.lastLoginIp}</td>
+                            <td style="width:4em;"> <a href="#editRobotModal" role="button" class="btn pull-right" data-toggle="modal" onclick="editRobot(${robot.id});">编辑</a></td>
                         </tr>
                     </c:forEach>
                     </tbody>
                 </table>
             </form>
-            <tags:pagination page="${users}" paginationSize="5"/>
+            <tags:pagination page="${robots}" paginationSize="5"/>
             <script>
                 function showMessage(type, msg){
                     var m = $('<div class="alert alert-'+ type +'"><button type="button" class="close" data-dismiss="alert">&times;</button>'+ msg +'</div>').appendTo('#delete_error');
@@ -62,16 +63,16 @@
                     }, 1600);
                 }
                 function addStatusDisabled(checkebox){
-                    var tdUserName = $(checkebox).parent().next();
-                    $(tdUserName).each(function(){
+                    var tdRobotName = $(checkebox).parent().next();
+                    $(tdRobotName).each(function(){
                         if($('.status_disabled', this).length == 0){
                             $(this).append('<span class="status_disabled">(已禁用)</span>');
                         }
                     });
                 }
                 function removeStatusDisabled(checkebox){
-                    var tdUserName = $(checkebox).parent().next();
-                    $('.status_disabled', tdUserName).remove();
+                    var tdRobotName = $(checkebox).parent().next();
+                    $('.status_disabled', tdRobotName).remove();
                 }
                 $(function(){
                     $('#contentTable input[type=checkbox]').click(function(){
@@ -84,7 +85,7 @@
                     $('#btn_delete').click(function(){
                         var checked = $('#contentTable input:checked');
                         $.ajax({
-                            url: '${ctx}/admin/user/deleteMulti',
+                            url: '${ctx}/admin/robot/deleteMulti',
                             data: $('#contentForm').serialize(),
                             success: function(){
                                 $(checked).parent().parent().remove();
@@ -97,7 +98,7 @@
                     $('#btn_enable').click(function(){
                         var checked = $('#contentTable input:checked');
                         $.ajax({
-                            url: '${ctx}/admin/user/enableMulti',
+                            url: '${ctx}/admin/robot/enableMulti',
                             data: $('#contentForm').serialize(),
                             success: function(){
                                 removeStatusDisabled(checked);
@@ -110,7 +111,7 @@
                     $('#btn_disable').click(function(){
                         var checked = $('#contentTable input:checked');
                         $.ajax({
-                            url: '${ctx}/admin/user/disableMulti',
+                            url: '${ctx}/admin/robot/disableMulti',
                             data: $('#contentForm').serialize(),
                             success: function(){
                                 addStatusDisabled(checked);
@@ -126,12 +127,12 @@
     </div>
 
 
-    <!-- dialog:添加新管理员 -->
+    <!-- dialog:添加新机器人 -->
     <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <form id="inputForm" action="${ctx}/register/ajax" method="post" class="form-horizontal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3 id="myModalLabel">添加管理员</h3>
+                <h3 id="myModalLabel">添加机器人</h3>
             </div>
             <div class="modal-body">
                 <fieldset>
@@ -216,12 +217,12 @@
 
 
 
-    <!-- dialog:编辑新管理员 -->
-    <div id="editUserModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
-        <form id="editUserForm" action="${ctx}/admin/user/update" method="post" class="form-horizontal">
+    <!-- dialog:编辑新机器人 -->
+    <div id="editRobotModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="editRobotModalLabel" aria-hidden="true">
+        <form id="editRobotForm" action="${ctx}/admin/robot/update" method="post" class="form-horizontal">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3 id="editUserModalLabel">编辑管理员</h3>
+                <h3 id="editRobotModalLabel">编辑机器人</h3>
             </div>
             <div class="modal-body">
                 <fieldset>
@@ -248,15 +249,15 @@
                     <div class="control-group">
                         <label for="confirmPassword" class="control-label">确认密码:</label>
                         <div class="controls">
-                            <input type="password" name="confirmPassword" class="input-large" equalTo="#editUserModal [name=plainPassword]" placeholder="留空表示不修改"/>
+                            <input type="password" name="confirmPassword" class="input-large" equalTo="#editRobotModal [name=plainPassword]" placeholder="留空表示不修改"/>
                         </div>
                     </div>
                 </fieldset>
                 <script>
                     $(document).ready(function() {
-                        var form = $('#editUserForm')[0];
+                        var form = $('#editRobotForm')[0];
                         //聚焦第一个输入框
-                        $('#editUserModal').on('shown', function () {
+                        $('#editRobotModal').on('shown', function () {
                             form.name.focus();
                         });
                         //为inputForm注册validate函数
@@ -268,9 +269,9 @@
                                     url: form.action,
                                     data: $(form).serialize(),
                                     success: function(){
-                                        $('#editUserModal').modal('hide');
+                                        $('#editRobotModal').modal('hide');
                                         form.reset();
-                                        $('#editUserModal .alert-error').remove();
+                                        $('#editRobotModal .alert-error').remove();
                                     },
                                     error: function(){
                                         $('#update_error').append('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>错误!</strong> 保存失败。</div>');
@@ -286,16 +287,16 @@
                             }
                         });
                     });
-                    function editUser(id){
+                    function editRobot(id){
                         $.ajax({
                             type: 'GET',
-                            url: '${ctx}/admin/user/' + id,
+                            url: '${ctx}/admin/robot/' + id,
                             dataType: 'json',
-                            success: function(user){
-                                var form = $('#editUserForm')[0];
+                            success: function(robot){
+                                var form = $('#editRobotForm')[0];
                                 form.id.value = id;
-                                form.name.value = user.name;
-                                form.loginName.value = user.loginName;
+                                form.name.value = robot.name;
+                                form.loginName.value = robot.loginName;
                             }
                         });
                     }
