@@ -237,13 +237,13 @@
                     <div class="control-group">
                         <label for="plainPassword" class="control-label">密码:</label>
                         <div class="controls">
-                            <input type="password" name="plainPassword" class="input-large" placeholder="如果不修改则留空"/>
+                            <input type="password" name="plainPassword" class="input-large" placeholder="留空表示不修改"/>
                         </div>
                     </div>
                     <div class="control-group">
                         <label for="confirmPassword" class="control-label">确认密码:</label>
                         <div class="controls">
-                            <input type="password" name="confirmPassword" class="input-large" equalTo="#plainPassword" placeholder="如果不修改则留空"/>
+                            <input type="password" name="confirmPassword" class="input-large" equalTo="#editUserModal [name=plainPassword]" placeholder="留空表示不修改"/>
                         </div>
                     </div>
                 </fieldset>
