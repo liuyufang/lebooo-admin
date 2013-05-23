@@ -208,7 +208,7 @@
                 </script>
             </div>
             <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                <button class="btn" data-dismiss="modal" aria-hidden="true" onclick="$('#inputForm')[0].reset()">取消</button>
                 <button id="register_submit_btn" type="submit" class="btn btn-primary">确认添加</button>
             </div>
         </form>
