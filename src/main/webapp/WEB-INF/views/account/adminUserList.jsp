@@ -248,7 +248,7 @@
                     <div class="control-group">
                         <label for="confirmPassword" class="control-label">确认密码:</label>
                         <div class="controls">
-                            <input type="password" name="confirmPassword" class="input-large" equalTo="#editUserModal [name=plainPassword]" placeholder="留空表示不修改"/>
+                            <input type="password" name="confirmPassword" class="input-large" equalTo="#editUserModal [name=plainPassword]"/>
                         </div>
                     </div>
                 </fieldset>
