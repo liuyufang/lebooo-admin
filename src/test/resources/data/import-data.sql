@@ -11,8 +11,8 @@ insert into admin_user (id, login_name, name, email, password, salt, status, reg
 insert into admin_user (id, login_name, name, email, password, salt, status, register_date) values(5,'user4','Sawyer','sawyer@springside.org.cn','2488aa0c31c624687bd9928e0a5d29e7d1ed520b','6d65d24122c30500','enabled','2012-06-04 01:00:00');
 insert into admin_user (id, login_name, name, email, password, salt, status, register_date) values(6,'user5','Ben','ben@springside.org.cn','2488aa0c31c624687bd9928e0a5d29e7d1ed520b','6d65d24122c30500','enabled','2012-06-04 01:00:00');
 
-insert into admin_role (id, name, permissions) values(1,'Admin','user:view,user:edit');
-insert into admin_role (id, name, permissions) values(2,'User','user:view');
+insert into admin_role (id, name, permissions) values(1,'admin','user:view,user:edit');
+insert into admin_role (id, name, permissions) values(2,'user','user:view');
 
 insert into admin_user_role (user_id, role_id) values(1,1);
 insert into admin_user_role (user_id, role_id) values(1,2);

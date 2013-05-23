@@ -20,6 +20,8 @@ create table admin_user (
 	email varchar(128),
 	status varchar(32),
 	register_date timestamp not null,
+	last_login_date timestamp,
+	last_login_ip varchar(64),
 	primary key (id)
 );
 

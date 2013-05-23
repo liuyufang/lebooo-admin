@@ -39,9 +39,14 @@
                             <td>${user.name}<c:if test="${user.status == 'disabled'}"><span class="status_disabled">(已禁用)</span></c:if></td>
                             <td>${user.email}</td>
                             <td>
-                                <fmt:formatDate value="${user.registerDate}" pattern="yyyy-MM-dd  HH:mm" />
+                                <c:if test="${user.lastLoginDate == null}">
+                                    (上次登录时间)
+                                </c:if>
+                                <c:if test="${user.lastLoginDate != null}">
+                                    <fmt:formatDate value="${user.lastLoginDate}" pattern="yyyy-MM-dd  HH:mm" />
+                                </c:if>
                             </td>
-                            <td>(上次登录ip)</td>
+                            <td>${user.lastLoginIp == null ? "(上次登录ip)" : user.lastLoginIp}</td>
                             <td style="width:4em;"> <a href="#editUserModal" role="button" class="btn pull-right" data-toggle="modal" onclick="editUser(${user.id});">编辑</a></td>
                         </tr>
                     </c:forEach>

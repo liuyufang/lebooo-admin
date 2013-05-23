@@ -30,6 +30,8 @@ public class User extends IdEntity {
     private String email;
     private String status = "enabled";
 	private Date registerDate;
+    private Date lastLoginDate;
+    private String lastLoginIp;
 
     private List<Role> roleList = Lists.newArrayList(); // 有序的关联对象集合
 
@@ -110,6 +112,22 @@ public class User extends IdEntity {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Date getLastLoginDate() {
+        return lastLoginDate;
+    }
+
+    public void setLastLoginDate(Date lastLoginDate) {
+        this.lastLoginDate = lastLoginDate;
+    }
+
+    public String getLastLoginIp() {
+        return lastLoginIp;
+    }
+
+    public void setLastLoginIp(String lastLoginIp) {
+        this.lastLoginIp = lastLoginIp;
     }
 
     // 多对多定义
