@@ -16,7 +16,6 @@
     <div id="delete_error"></div>
 
     <div class="row-fluid main">
-        <%--<div id="delete_error"></div>--%>
         <div class="span3 left-nav">
             <ul>
                 <li class="active">管理员账号<span class="icon-chevron-right pull-right"></span></li>

@@ -13,7 +13,14 @@
     <div id="message" class="alert alert-success"><button data-dismiss="alert" class="close">×</button>${message}</div>
 </c:if>
 
-(待实现)
+
+<form action="${ctx}/lebooo/add" method="post" enctype="multipart/form-data">
+
+    <textarea name="desc"/>
+    <input type="file" name="file" />
+    <input type="submit" value="上传" />
+
+</form>
 
 </body>
 </html>

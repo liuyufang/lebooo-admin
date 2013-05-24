@@ -17,7 +17,6 @@
     <div id="delete_error"></div>
 
     <div class="row-fluid main">
-        <%--<div id="delete_error"></div>--%>
         <div class="span3 left-nav">
             <ul>
                 <shiro:hasRole name="admin"><li onclick="window.location.href='${ctx}/admin/user'">管理员账号<span class="icon-chevron-right pull-right"></span></li></shiro:hasRole>
@@ -249,7 +248,7 @@
                     <div class="control-group">
                         <label for="confirmPassword" class="control-label">确认密码:</label>
                         <div class="controls">
-                            <input type="password" name="confirmPassword" class="input-large" equalTo="#editRobotModal [name=plainPassword]" placeholder="留空表示不修改"/>
+                            <input type="password" name="confirmPassword" class="input-large" equalTo="#editRobotModal [name=plainPassword]"/>
                         </div>
                     </div>
                 </fieldset>
