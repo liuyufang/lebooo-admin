@@ -8,7 +8,7 @@
             <h1>后台管理
                 <div class="pull-right">
                     你好，<a href="${ctx}/profile"><span class="name"><shiro:principal property="name"/></span></a>
-                    <a href="${ctx}/lebooo/addvideo" class="menu">发布视频</a>
+                    <a href="${ctx}/lebooo/publishvideo" class="menu">发布视频</a>
                     <a href="${ctx}/logout" class="menu">退出登录</a>
                 </div>
             </h1>

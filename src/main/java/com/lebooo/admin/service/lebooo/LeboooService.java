@@ -1,4 +1,4 @@
-package com.lebooo.admin.lebooo;
+package com.lebooo.admin.service.lebooo;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -9,6 +9,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
+import org.springframework.stereotype.Component;
 import org.springside.modules.security.utils.Digests;
 import org.springside.modules.utils.Encodes;
 
@@ -23,7 +24,9 @@ import java.util.Map;
  * Date: 13-5-21
  * Time: AM10:26
  */
-public class LeboooDao extends SimpleHttpClient{
+// Spring Service Bean的标识.
+@Component
+public class LeboooService extends SimpleHttpClient{
     private static String leboLoginSalt = "ch1putaoButuputaopi";
 
     private static String leboServerIp = "219.142.106.138";
@@ -66,7 +69,7 @@ public class LeboooDao extends SimpleHttpClient{
      * @param video
      * @param photo
      * @param fileName
-     * @param fileDescription
+     * @param description
      *
      *
      * 成功上传服务器响应:
@@ -89,13 +92,13 @@ public class LeboooDao extends SimpleHttpClient{
     "version": "1.0"
     }
      */
-    public LeboResponseData publishVideo(String authorization, File video, File photo, String fileName, String fileDescription){
+    public LeboResponseData publishVideo(String authorization, File video, File photo, String description){
         String url = leboUploadApi + "%20publishLebo/?" + authorization;
 
         HttpPost httpPost = new HttpPost (url);
         try{
             MultipartEntity multiPartEntity = new MultipartEntity () ;
-            multiPartEntity.addPart("content", new StringBody(fileDescription != null ? fileDescription : "")) ;
+            multiPartEntity.addPart("content", new StringBody(description != null ? description : "")) ;
             multiPartEntity.addPart("movie", new FileBody(video, "application/octect-stream"));
             multiPartEntity.addPart("photo", new FileBody(photo, "application/octect-stream"));
             httpPost.setEntity(multiPartEntity);
@@ -106,7 +109,7 @@ public class LeboooDao extends SimpleHttpClient{
             return jsonMapper.fromJson(getResponseText(responseHttpEntiry), LeboResponseData.class);
         } catch (IOException e) {
             httpPost.abort();
-            throw new RuntimeException("上传视频出错", e);
+            throw new RuntimeException("发布视频出错", e);
         }
 
     }
@@ -145,11 +148,11 @@ public class LeboooDao extends SimpleHttpClient{
 
     // --- Run ---
     public static void main(String[] args) {
-        LeboooDao leboooDao = new LeboooDao();
+        LeboooService leboooService = new LeboooService();
         String accountId = "storage_1804289383_113";
-        String auth = leboooDao.login(accountId);
-        leboooDao.publishVideo(auth, new File("/Users/liuwei/lebooo/small-video.mp4"), new File("/Users/liuwei/lebooo/small-photo.png"), "test-file-name", "test upload video 2");
-        LeboResponseData data = leboooDao.getAccountInfo(auth, accountId);
+        String auth = leboooService.login(accountId);
+        //leboooService.publishVideo(auth, new File("/Users/liuwei/lebooo/small-video.mp4"), new File("/Users/liuwei/lebooo/small-photo.png"),  "test upload video 2");
+        LeboResponseData data = leboooService.getAccountInfo(auth, accountId);
         System.out.println(data.getResult().get("topicCount"));
     }
 }

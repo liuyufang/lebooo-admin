@@ -1,4 +1,4 @@
-package com.lebooo.admin.lebooo;
+package com.lebooo.admin.service.lebooo;
 
 import java.util.Map;
 
