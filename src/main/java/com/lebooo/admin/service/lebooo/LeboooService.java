@@ -9,7 +9,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springside.modules.security.utils.Digests;
 import org.springside.modules.utils.Encodes;
 
@@ -27,11 +29,12 @@ import java.util.Map;
 // Spring Service Bean的标识.
 @Component
 public class LeboooService extends SimpleHttpClient{
-    private static String leboLoginSalt = "ch1putaoButuputaopi";
-
-    private static String leboServerIp = "219.142.106.138";
-    private static String leboApi = "http://"+ leboServerIp +":8080/cmd=GEOWEIBOD.handle_lebo_service2/";
-    private static String leboUploadApi = "http://"+ leboServerIp +":8080/cmd=GEOWEIBOD.handle_upload_service2";
+    @Value("${lebooo.admin.login.salt}")
+    private String leboLoginSalt;
+    @Value("${lebooo.api.url}")
+    private String leboApi;
+    @Value("${lebooo.api.upload.url}")
+    private String leboUploadApi;
 
     public String login(String accountId) {
         LeboPostData data = new LeboPostData("loginMultiSession");
@@ -68,7 +71,6 @@ public class LeboooService extends SimpleHttpClient{
      * @param authorization
      * @param video
      * @param photo
-     * @param fileName
      * @param description
      *
      *
@@ -126,7 +128,7 @@ public class LeboooService extends SimpleHttpClient{
     }
 
     // ---- Hepler ---
-    private static String getPass(String accountId) {
+    private String getPass(String accountId) {
         String str = accountId + leboLoginSalt;
         try {
             return Encodes.encodeHex(Digests.md5(new ByteArrayInputStream(str.getBytes())));
@@ -148,7 +150,7 @@ public class LeboooService extends SimpleHttpClient{
 
     // --- Run ---
     public static void main(String[] args) {
-        LeboooService leboooService = new LeboooService();
+        LeboooService leboooService = null;
         String accountId = "storage_1804289383_113";
         String auth = leboooService.login(accountId);
         //leboooService.publishVideo(auth, new File("/Users/liuwei/lebooo/small-video.mp4"), new File("/Users/liuwei/lebooo/small-photo.png"),  "test upload video 2");

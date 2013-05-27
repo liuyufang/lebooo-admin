@@ -51,7 +51,11 @@ public class PublishVideoController {
             tempVideoFile.delete();
             tempPhotoFile.delete();
 
-            model.put("message", "发布视频成功");
+            if(leboResponseData != null ){
+                model.put("message", "发布视频成功");
+            }else{
+                model.put("error", "发布视频失败，请重试");
+            }
         } catch (Exception e) {
             model.put("error", "发布视频失败，请重试");
         }
