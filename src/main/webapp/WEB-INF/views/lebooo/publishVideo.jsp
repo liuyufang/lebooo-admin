@@ -21,7 +21,7 @@
 </c:if>
 
 
-<form action="${ctx}/lebooo/publishvideo" method="post" enctype="multipart/form-data">
+<form id="publishVideoForm" action="${ctx}/lebooo/publishvideo" method="post" enctype="multipart/form-data">
 
     <div class="row-fluid" style="border: 1px solid #797979;">
         <div style="float:left; width: 540px; padding: 1.5em; height: 400px">
@@ -42,15 +42,17 @@
                 </select>
                 <div id="publishDateTimeInputGroup" style="display: none;">
                     <input type="text" name="publishDate" style="width: 10em;" />
-                    <input type="text" style="width: 5em;" name="publishTime"/>
+                    <input type="text" name="publishTime" style="width: 5em;"/>
                 </div>
                 <script>
                     $('#publishTimeOption').change(function(){
                         if(this.value == 'schedule'){
                             $('#publishDateTimeInputGroup').show();
                             $('[name=publishDate]', '#publishDateTimeInputGroup').focus();
+                            $('#publishVideoForm')[0].action = '${ctx}/lebooo/publishvideo/schedule';
                         }else{
                             $('#publishDateTimeInputGroup').hide();
+                            $('#publishVideoForm')[0].action = '${ctx}/lebooo/publishvideo';
                         }
                     });
                 </script>

@@ -1,8 +1,10 @@
 package com.lebooo.admin.service.task;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -50,6 +52,19 @@ public class TaskService {
 
 		return taskDao.findAll(spec, pageRequest);
 	}
+
+    /**
+     * 查询到期任务
+     */
+    public List<Task> getDueTask(Date time, String type) {
+        Map<String, SearchFilter> filters = Maps.newHashMap();
+        filters.put("scheduleTime", new SearchFilter("scheduleTime", Operator.LTE, time));
+        filters.put("status", new SearchFilter("status", Operator.EQ, Task.STATUS_VALUE_TODO));
+        filters.put("type", new SearchFilter("type", Operator.EQ, type));
+        Specification<Task> spec = DynamicSpecifications.bySearchFilter(filters.values(), Task.class);
+
+        return taskDao.findAll(spec);
+    }
 
 	/**
 	 * 创建分页请求.

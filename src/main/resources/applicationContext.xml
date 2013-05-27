@@ -53,8 +53,11 @@
 
 	<!-- JSR303 Validator定义 -->
  	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
-	
-	<!-- production环境 -->
+
+    <!-- 定时任务配置 -->
+    <import resource="schedule/applicationContext-jdk-timer.xml" />
+
+    <!-- production环境 -->
  	<beans profile="production">
  		<context:property-placeholder ignore-unresolvable="true"
 			location="classpath*:/application.properties,

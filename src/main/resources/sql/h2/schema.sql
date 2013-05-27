@@ -8,7 +8,10 @@ create table admin_task (
   title varchar(128) not null,
 	description varchar(255),
 	user_id bigint not null,
-    primary key (id)
+	type varchar(128),
+	schedule_time timestamp,
+	status  varchar(32),
+  primary key (id)
 );
 
 create table admin_user (
