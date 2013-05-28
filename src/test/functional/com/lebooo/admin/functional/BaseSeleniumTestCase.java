@@ -1,12 +1,12 @@
 package com.lebooo.admin.functional;
 
-import static org.junit.Assert.*;
-
 import org.junit.BeforeClass;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.springside.modules.test.selenium.Selenium2;
 import org.springside.modules.test.selenium.WebDriverFactory;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * 使用Selenium的功能测试基类.

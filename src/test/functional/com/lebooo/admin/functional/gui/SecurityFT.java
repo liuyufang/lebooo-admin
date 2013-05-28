@@ -1,10 +1,11 @@
 package com.lebooo.admin.functional.gui;
 
-import static org.junit.Assert.*;
-
+import com.lebooo.admin.functional.BaseSeleniumTestCase;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import com.lebooo.admin.functional.BaseSeleniumTestCase;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * 系统安全控制的功能测试, 测试主要用户故事.

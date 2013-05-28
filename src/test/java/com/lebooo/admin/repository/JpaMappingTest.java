@@ -1,17 +1,17 @@
 package com.lebooo.admin.repository;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.test.context.ContextConfiguration;
+import org.springside.modules.test.spring.SpringTransactionalTestCase;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.test.context.ContextConfiguration;
-import org.springside.modules.test.spring.SpringTransactionalTestCase;
+import static org.junit.Assert.assertTrue;
 
 @ContextConfiguration(locations = { "/applicationContext.xml" })
 public class JpaMappingTest extends SpringTransactionalTestCase {

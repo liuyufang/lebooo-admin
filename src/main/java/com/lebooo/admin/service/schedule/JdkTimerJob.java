@@ -1,18 +1,15 @@
 package com.lebooo.admin.service.schedule;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.commons.lang3.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.support.TaskUtils;
 import org.springside.modules.utils.Threads;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 用JDKScheduledThreadPoolExecutor定时执行的任务。

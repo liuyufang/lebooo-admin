@@ -11,7 +11,6 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springside.modules.security.utils.Digests;
 import org.springside.modules.utils.Encodes;
 

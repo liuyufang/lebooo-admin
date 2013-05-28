@@ -1,23 +1,23 @@
 package com.lebooo.admin.service.account;
 
-import static org.junit.Assert.*;
-
-import java.util.Date;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import com.lebooo.admin.data.UserData;
 import com.lebooo.admin.entity.User;
 import com.lebooo.admin.repository.TaskDao;
 import com.lebooo.admin.repository.UserDao;
 import com.lebooo.admin.service.ServiceException;
 import com.lebooo.admin.service.account.ShiroDbRealm.ShiroUser;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springside.modules.test.security.shiro.ShiroTestUtils;
 import org.springside.modules.utils.DateProvider.ConfigurableDateProvider;
+
+import java.util.Date;
+
+import static org.junit.Assert.*;
 
 /**
  * AccountService的测试用例, 测试Service层的业务逻辑.

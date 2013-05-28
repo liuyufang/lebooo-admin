@@ -1,7 +1,8 @@
 package com.lebooo.admin.web.account;
 
-import javax.validation.Valid;
-
+import com.lebooo.admin.entity.User;
+import com.lebooo.admin.service.account.AccountService;
+import com.lebooo.admin.service.account.ShiroDbRealm.ShiroUser;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,9 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.lebooo.admin.entity.User;
-import com.lebooo.admin.service.account.AccountService;
-import com.lebooo.admin.service.account.ShiroDbRealm.ShiroUser;
+
+import javax.validation.Valid;
 
 /**
  * 用户修改自己资料的Controller.

@@ -1,10 +1,10 @@
 package com.lebooo.admin.functional.gui;
 
-import static org.junit.Assert.*;
-
+import com.lebooo.admin.functional.BaseSeleniumTestCase;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import com.lebooo.admin.functional.BaseSeleniumTestCase;
+
+import static org.junit.Assert.assertTrue;
 
 public class ProfileFT extends BaseSeleniumTestCase {
 

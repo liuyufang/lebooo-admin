@@ -1,7 +1,6 @@
 package com.lebooo.admin.web.lebooo;
 
 import com.google.common.collect.Lists;
-import com.lebooo.admin.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -9,12 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springside.modules.web.Servlets;
 
 import javax.servlet.ServletRequest;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author: Wei Liu

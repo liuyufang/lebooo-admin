@@ -1,11 +1,8 @@
 package com.lebooo.admin.functional.rest;
 
-import static org.junit.Assert.*;
-
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Map;
-
+import com.lebooo.admin.data.TaskData;
+import com.lebooo.admin.entity.Task;
+import com.lebooo.admin.functional.BaseFunctionalTestCase;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -13,11 +10,15 @@ import org.junit.experimental.categories.Category;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import com.lebooo.admin.data.TaskData;
-import com.lebooo.admin.entity.Task;
-import com.lebooo.admin.functional.BaseFunctionalTestCase;
 import org.springside.modules.mapper.JsonMapper;
 import org.springside.modules.test.category.Smoke;
+
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * 任务管理的功能测试, 测试页面JavaScript及主要用户故事流程.

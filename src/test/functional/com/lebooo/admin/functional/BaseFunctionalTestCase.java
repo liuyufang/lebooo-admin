@@ -1,8 +1,5 @@
 package com.lebooo.admin.functional;
 
-import java.net.URL;
-import java.sql.Driver;
-
 import org.eclipse.jetty.server.Server;
 import org.junit.BeforeClass;
 import org.slf4j.Logger;
@@ -12,6 +9,9 @@ import org.springside.modules.test.data.DataFixtures;
 import org.springside.modules.test.jetty.JettyFactory;
 import org.springside.modules.test.selenium.Selenium2;
 import org.springside.modules.utils.PropertiesLoader;
+
+import java.net.URL;
+import java.sql.Driver;
 
 /**
  * 功能测试基类.

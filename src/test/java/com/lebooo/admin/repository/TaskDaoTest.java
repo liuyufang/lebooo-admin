@@ -1,15 +1,15 @@
 package com.lebooo.admin.repository;
 
-import static org.junit.Assert.*;
-
+import com.lebooo.admin.entity.Task;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.context.ContextConfiguration;
-import com.lebooo.admin.entity.Task;
 import org.springside.modules.test.spring.SpringTransactionalTestCase;
+
+import static org.junit.Assert.assertEquals;
 
 @ContextConfiguration(locations = { "/applicationContext.xml" })
 public class TaskDaoTest extends SpringTransactionalTestCase {

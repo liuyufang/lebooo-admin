@@ -7,7 +7,8 @@ import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springside.modules.utils.DateProvider;
 
-import javax.servlet.*;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 /**
  * @author: Wei Liu
