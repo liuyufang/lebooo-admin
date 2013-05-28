@@ -72,6 +72,9 @@
             //为inputForm注册validate函数
             $("#publishVideoForm").validate({
                 rules: {
+                    video: {
+                        regex: ".+\\.mp4"
+                    },
                     publishDate: {
                         required: true,
                         regex: "\\d{4}/\\d{2}/\\d{2}"
@@ -82,6 +85,9 @@
                     }
                 },
                 messages: {
+                    video: {
+                        regex: "视频格式不对，只允许 mp4 文件"
+                    },
                     publishDate: {
                         regex: "日期格式不正确"
                     },
