@@ -10,9 +10,9 @@
 - Maven 3
 - SpringSide4 4.1.0-SNAPSHOT
 
-      git clone https://github.com/springside/springside4.git
-      cd springside4/modules
-      mvn install
+        git clone https://github.com/springside/springside4.git
+        cd springside4/modules
+        mvn install
 
 ## 启动
 
