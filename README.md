@@ -7,14 +7,19 @@
 ## 环境要求
 
 - JDK 1.6
-- Maven
+- Maven 3
+- SpringSide4 4.1.0-SNAPSHOT
+
+      git clone https://github.com/springside/springside4.git
+      cd springside4/modules
+      mvn install
 
 ## 启动
 
 1. 执行 `mvn antrun:run -Prefresh-db` 初始化h2数据库。
 2. 执行 `mvn jetty:run` 可以正常启动工程。
 
-如果因为缺少某些依赖导致启动失败，请检查你的maven配置(或maven私服)，确保包含以下仓库：
+如果因为缺少某些依赖导致失败，请检查你的maven配置(或maven私服)，确保包含以下仓库：
 
     <repositories>
       <repository>
